@@ -1,5 +1,6 @@
 # SheetSetManager
 SheetSetManager
+Read/Write AutoCAD .dst file
 
 Use:
 ```elixir
