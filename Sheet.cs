@@ -7,7 +7,7 @@ namespace SheetSetManager
     public class Sheet : MyNode
     {
 
-        public CustomPropertyBag wCustomPropertyBag;
+        public CustomPropertyBag wCustomPropertyBag = null;
         public Layout layout;
 
         public Sheet(XmlElement nParent)
@@ -16,7 +16,7 @@ namespace SheetSetManager
             XmlNode wNode = Parent.SelectSingleNode("./AcSmAcDbLayoutReference");
             layout = new Layout((XmlElement)wNode);
             wNode = Parent.SelectSingleNode("./AcSmCustomPropertyBag");
-            wCustomPropertyBag = new CustomPropertyBag((XmlElement)wNode);
+            if (wNode != null) wCustomPropertyBag = new CustomPropertyBag((XmlElement)wNode);
         }
 
         public override String Name
@@ -38,10 +38,7 @@ namespace SheetSetManager
             get
             {
                 XmlNode wNode = Parent.SelectSingleNode("./AcSmProp[@propname=\"Number\"]");
-                if (wNode != null)
-                {
-                    return wNode.InnerText;
-                }
+                if (wNode != null)  return wNode.InnerText;
                 else { return ""; }
             }
         }
@@ -50,9 +47,12 @@ namespace SheetSetManager
         {
             List<CustomProperty> wList = new List<CustomProperty>();
             XmlNode wXMLNode = Parent.SelectSingleNode("./AcSmCustomPropertyBag");
-            foreach (XmlNode xmln in wXMLNode.ChildNodes)
+            if (wXMLNode != null)
             {
-                wList.Add(new CustomProperty((XmlElement)xmln));
+                foreach (XmlNode xmln in wXMLNode.ChildNodes)
+                {
+                    wList.Add(new CustomProperty((XmlElement)xmln));
+                }
             }
             return wList;
         }
